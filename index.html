@@ -345,8 +345,6 @@ h2{
     rgba(155,211,178,.2);
 }
 
-/* todos verdes, pero en diferentes tonos */
-
 .hero h1 .medir{
   color:#d2f0c4;
 }
@@ -499,45 +497,19 @@ h2{
 }
 
 .video-frame{
-  aspect-ratio:16/8.7;
+  aspect-ratio:16/9;
   border:1px solid rgba(255,255,255,.16);
   position:relative;
   background:#0d2925;
   overflow:hidden;
 }
 
-.video-frame video{
+.video-frame iframe{
   width:100%;
   height:100%;
-  object-fit:cover;
+  border:0;
   display:block;
 }
-
-.video-placeholder{
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  background:
-    radial-gradient(
-      circle at center,
-      rgba(155,211,178,.12),
-      transparent 42%
-    );
-}
-
-.video-placeholder span{
-  border:1px solid rgba(255,255,255,.25);
-  padding:18px 25px;
-  font:10px "DM Mono";
-  letter-spacing:.15em;
-}
-
-
-.video-play-button{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:82px;height:82px;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:#39a96b;display:grid;place-items:center;cursor:pointer;z-index:4;box-shadow:0 0 0 8px rgba(57,169,107,.12),0 14px 35px rgba(0,0,0,.28);transition:transform .3s ease,background .3s ease,opacity .3s ease;}
-.video-play-button:hover{transform:translate(-50%,-50%) scale(1.08);background:#4cc47f;}
-.video-play-button span{width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:16px solid #fff;margin-left:4px;}
-.video-play-button.hidden{opacity:0;pointer-events:none;}
 
 .video-note{
   margin-top:15px;
@@ -1021,8 +993,6 @@ h2{
   margin-top:20px;
 }
 
-
-/* AJUSTE MONITOREO WEB */
 .web-grid > .reveal:first-child h2{
   width:100%;
   text-align:center;
@@ -1053,6 +1023,7 @@ h2{
 .web-control-link{
   margin:14px 0 0;
 }
+
 
 /* =========================================================
    GALERÍA
@@ -1296,8 +1267,6 @@ h2{
     scale(.985);
 }
 
-
-
 .code-section{background:#102f2b;color:#fff;}
 .code-grid{display:grid;grid-template-columns:1fr .9fr;gap:80px;align-items:center;}
 .code-copy .lead{color:rgba(255,255,255,.62);}
@@ -1505,8 +1474,6 @@ h2{
 
 }
 
-
-/* AJUSTE FINAL — MONITOREO WEB */
 .web-control .web-grid{
   display:flex;
   flex-direction:column;
@@ -1578,7 +1545,6 @@ h2{
   text-align:center;
 }
 
-/* MENÚ: todas las secciones */
 .nav-links{
   display:flex;
   flex-wrap:wrap;
@@ -1607,7 +1573,6 @@ h2{
   }
 }
 
-/* CORRECCIÓN FINAL — MONITOREO WEB Y MENÚ */
 .web-grid{display:flex!important;flex-direction:column!important;align-items:center!important;gap:34px!important;}
 .web-grid > .reveal:first-child{width:100%!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;}
 .web-grid > .reveal:first-child .kicker,.web-grid > .reveal:first-child h2{width:100%!important;text-align:center!important;margin-left:auto!important;margin-right:auto!important;}
@@ -1935,27 +1900,13 @@ h2{
 
     <div class="video-frame reveal">
 
-      <video
-        controls
-        poster="assets/pictures/video-poster.jpg"
-      >
-
-        <source
-          src="assets/pictures/video-proyecto.mp4"
-          type="video/mp4"
-        >
-
-      </video>
-
-      <div
-        class="video-placeholder"
-        id="videoPlaceholder"
-      >
-      </div>
-
-      <button class="video-play-button" id="videoPlayButton" aria-label="Reproducir video" title="Reproducir video">
-        <span></span>
-      </button>
+      <iframe 
+        id="ytPlayer"
+        src="https://www.youtube.com/embed/6XzJBTGkoL4?enablejsapi=1&controls=0&rel=0&modestbranding=1" 
+        title="Reproductor de video MIAV" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
 
     </div>
 
@@ -2136,8 +2087,6 @@ h2{
       </article>
 
 
-      <!-- RESISTENCIAS -->
-
       <article class="component">
 
         <div class="component-image"></div>
@@ -2159,8 +2108,6 @@ h2{
       </article>
 
 
-      <!-- CAPACITORES -->
-
       <article class="component">
 
         <div class="component-image"></div>
@@ -2180,8 +2127,6 @@ h2{
 
       </article>
 
-
-      <!-- ALIMENTACIÓN -->
 
       <article class="component">
 
@@ -2833,8 +2778,6 @@ h2{
     <div class="team-grid reveal">
 
 
-      <!-- SOFÍA -->
-
       <article class="team-member">
 
         <div class="team-photo">
@@ -2871,8 +2814,6 @@ h2{
       </article>
 
 
-      <!-- CHRISTOPHER -->
-
       <article class="team-member">
 
         <div class="team-photo">
@@ -2908,8 +2849,6 @@ h2{
 
       </article>
 
-
-      <!-- JOSÉ -->
 
       <article class="team-member">
 
@@ -3086,6 +3025,9 @@ h2{
 </footer>
 
 
+<!-- Carga de la API IFrame de YouTube -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
 
 /* =====================================================
@@ -3236,60 +3178,10 @@ document
 
 
 /* =====================================================
-   VIDEO & CONTROL DE MÚSICA SINCRONIZADO
+   MÚSICA AMBIENTAL & CONTROL CON YOUTUBE
 ===================================================== */
 
-const video = document.querySelector("video");
-const placeholder = document.getElementById("videoPlaceholder");
 const bgMusic = document.getElementById("bgMusic");
-const videoPlayButton = document.getElementById("videoPlayButton");
-
-if(video){
-
-  video.addEventListener("loadeddata", () => {
-    if(placeholder) placeholder.style.display = "none";
-  });
-
-  video.addEventListener("error", () => {
-    if(placeholder) placeholder.style.display = "grid";
-  });
-
-  // Pausar música al reproducir el video
-  video.addEventListener("play", () => {
-    if(videoPlayButton) videoPlayButton.classList.add("hidden");
-    if(bgMusic && !bgMusic.paused) {
-      bgMusic.pause();
-    }
-  });
-
-  // Reanudar música al pausar el video
-  video.addEventListener("pause", () => {
-    if(videoPlayButton) videoPlayButton.classList.remove("hidden");
-    if(bgMusic && bgMusic.paused) {
-      bgMusic.play().catch(e => console.log(e));
-    }
-  });
-
-  // Reanudar música cuando el video finalice
-  video.addEventListener("ended", () => {
-    if(videoPlayButton) videoPlayButton.classList.remove("hidden");
-    if(bgMusic && bgMusic.paused) {
-      bgMusic.play().catch(e => console.log(e));
-    }
-  });
-}
-
-/* Botón Play personalizado sobre el video */
-if(video && videoPlayButton){
-  videoPlayButton.addEventListener("click", async () => {
-    try{ await video.play(); }catch(e){ console.log("No se pudo reproducir el video."); }
-  });
-}
-
-
-/* =====================================================
-   MÚSICA AMBIENTAL INICIAL
-===================================================== */
 
 if (bgMusic) {
   bgMusic.volume = 0.22;
@@ -3298,8 +3190,30 @@ if (bgMusic) {
   }
   startMusic();
   document.addEventListener("pointerdown", () => {
-    if (bgMusic.paused && video && video.paused) startMusic();
+    if (bgMusic.paused) startMusic();
   }, { once:false });
+}
+
+// Integración de la API de YouTube
+let player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('ytPlayer', {
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
+    }
+  } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+    if (bgMusic && bgMusic.paused) {
+      bgMusic.play().catch(e => {});
+    }
+  }
 }
 
 
