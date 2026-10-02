@@ -3236,58 +3236,70 @@ document
 
 
 /* =====================================================
-   VIDEO
+   VIDEO & CONTROL DE MÚSICA SINCRONIZADO
 ===================================================== */
 
-const video =
-  document.querySelector("video");
-
-const placeholder =
-  document.getElementById(
-    "videoPlaceholder"
-  );
-
+const video = document.querySelector("video");
+const placeholder = document.getElementById("videoPlaceholder");
+const bgMusic = document.getElementById("bgMusic");
+const videoPlayButton = document.getElementById("videoPlayButton");
 
 if(video){
 
-  video.addEventListener(
-    "loadeddata",
-    () => {
+  video.addEventListener("loadeddata", () => {
+    if(placeholder) placeholder.style.display = "none";
+  });
 
-      placeholder.style.display =
-        "none";
+  video.addEventListener("error", () => {
+    if(placeholder) placeholder.style.display = "grid";
+  });
 
+  // Pausar música al reproducir el video
+  video.addEventListener("play", () => {
+    if(videoPlayButton) videoPlayButton.classList.add("hidden");
+    if(bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
     }
-  );
+  });
 
-
-  video.addEventListener(
-    "error",
-    () => {
-
-      placeholder.style.display =
-        "grid";
-
+  // Reanudar música al pausar el video
+  video.addEventListener("pause", () => {
+    if(videoPlayButton) videoPlayButton.classList.remove("hidden");
+    if(bgMusic && bgMusic.paused) {
+      bgMusic.play().catch(e => console.log(e));
     }
-  );
+  });
 
+  // Reanudar música cuando el video finalice
+  video.addEventListener("ended", () => {
+    if(videoPlayButton) videoPlayButton.classList.remove("hidden");
+    if(bgMusic && bgMusic.paused) {
+      bgMusic.play().catch(e => console.log(e));
+    }
+  });
+}
+
+/* Botón Play personalizado sobre el video */
+if(video && videoPlayButton){
+  videoPlayButton.addEventListener("click", async () => {
+    try{ await video.play(); }catch(e){ console.log("No se pudo reproducir el video."); }
+  });
 }
 
 
 /* =====================================================
-   BOTÓN PLAY DEL VIDEO
+   MÚSICA AMBIENTAL INICIAL
 ===================================================== */
 
-const projectVideo = document.querySelector(".video-frame video");
-const videoPlayButton = document.getElementById("videoPlayButton");
-
-if(projectVideo && videoPlayButton){
-  videoPlayButton.addEventListener("click", async () => {
-    try{ await projectVideo.play(); }catch(e){ console.log("No se pudo reproducir el video."); }
-  });
-  projectVideo.addEventListener("play", () => videoPlayButton.classList.add("hidden"));
-  projectVideo.addEventListener("pause", () => videoPlayButton.classList.remove("hidden"));
-  projectVideo.addEventListener("ended", () => videoPlayButton.classList.remove("hidden"));
+if (bgMusic) {
+  bgMusic.volume = 0.22;
+  async function startMusic(){
+    try { await bgMusic.play(); } catch (e) {}
+  }
+  startMusic();
+  document.addEventListener("pointerdown", () => {
+    if (bgMusic.paused && video && video.paused) startMusic();
+  }, { once:false });
 }
 
 
@@ -3295,48 +3307,18 @@ if(projectVideo && videoPlayButton){
    LOGO HOVER SUTIL
 ===================================================== */
 
-const logo =
-  document.querySelector(".logo");
-
+const logo = document.querySelector(".logo");
 
 if(logo){
+  logo.addEventListener("mouseenter", () => {
+    logo.style.opacity = "1";
+  });
 
-  logo.addEventListener(
-    "mouseenter",
-    () => {
-
-      logo.style.opacity = "1";
-
-    }
-  );
-
-
-  logo.addEventListener(
-    "mouseleave",
-    () => {
-
-      logo.style.opacity = "";
-
-    }
-  );
-
+  logo.addEventListener("mouseleave", () => {
+    logo.style.opacity = "";
+  });
 }
 
-</script>
-
-<script>
-  // Música ambiental MIAV
-  const bgMusic = document.getElementById("bgMusic");
-  if (bgMusic) {
-    bgMusic.volume = 0.22;
-    async function startMusic(){
-      try { await bgMusic.play(); } catch (e) {}
-    }
-    startMusic();
-    document.addEventListener("pointerdown", () => {
-      if (bgMusic.paused) startMusic();
-    }, { once:false });
-  }
 </script>
 
 </body>
